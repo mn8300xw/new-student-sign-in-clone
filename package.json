@@ -1,0 +1,21 @@
+{
+  "name": "new-student-sign-in-clone",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "license": "ISC",
+  "author": "Vanessa Moreno",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "sequelize": "^6.37.7",
+    "tedious": "^18.6.1"
+  },
+  "devDependencies": {
+    "sqlite3": "^5.1.7"
+  }
+}
