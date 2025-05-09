@@ -1,56 +1,61 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { mande } from 'mande'
+
+const studentAPI = mande('api/students')
 
 export const useStudentStore = defineStore('students', () => {
 
-    const studentList = ref([
-        { name: "A. Student", starID: "aa1234aa", present: false },
-        { name: "B. Student", starID: "bb1234bb", present: false }
-    ])
 
+    const sortedStudents = ref([])
     const mostRecentStudent = ref( {} )
 
+    const addNewStudentErrors = ref( [])
+
+    function getAllStudents() {
+        studentAPI.get().then( students => {
+            sortedStudents.value = students
+        })
+    }
+
     function addNewStudent(student) {
-        studentList.value.push(student)
+        studentAPI.post(student).then( () => {
+            getAllStudents()
+        })
     }
 
     function deleteStudent(studentToDelete) {
-        studentList.value = studentList.value.filter( (student) => {
-            return studentToDelete != student
+        sortedStudents.value = sortedStudents.value.filter( (student) => {
+            return studentToDelete !== student
         })
     }
 
     function arrivedOrLeft(student) {
-        // Returns -1 if the student is not found
-        const studentToModifyIndex = studentList.value.findIndex(s => s.starID == student.starID)
-        if (studentToModifyIndex != -1) {
-            mostRecentStudent.value = student
-            studentList.value[studentToModifyIndex] = student
-        }
+       const editStudentAPI = mande(`/api/students/${student.id}`)
+       editStudentAPI.patch(student).then( () => {
+       getAllStudents()
+       })
     }
 
-    const sortedStudents = computed( () => {
-        return studentList.value.toSorted( (s1, s2) => {
-            return s1.name.localeCompare(s2.name)
-        })
-    })
+
 
     const studentCount = computed( () => {
-        return studentList.value.length
+        return sortedStudents.value.length
     })
 
     return { 
         // reactive data
-        studentList, 
+        sortedStudents,
         mostRecentStudent, 
 
         // functions
         addNewStudent, 
         deleteStudent, 
-        arrivedOrLeft, 
+        arrivedOrLeft,
+        getAllStudents,
 
         // computed properties
-        sortedStudents,
+
         studentCount
     }
 

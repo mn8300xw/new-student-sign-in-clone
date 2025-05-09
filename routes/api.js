@@ -34,7 +34,7 @@ router.patch('/students/:id', function(req, res, next) {
     Student.update( updatedStudent, { where: { id: studentID} })
         .then( (result) => {
             const rowsModified = result[0]
-            if (rowsModified == 1) {
+            if (rowsModified === 1) {
                 return res.send('Student updated')
             } else {
                 return res.status(404).send('Student not found')
