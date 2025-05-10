@@ -13,8 +13,8 @@ app.use(function(req, res, next) {
 })
 
 app.use(function(req, res, next, err) {
-    console.error(err.stack)
-    res.status(500).send('Server error')
+    console.error(err.stack) // for server developers
+    res.status(500).send('Server error') // for client
 })
 
 // Start server running

@@ -25,8 +25,9 @@ export const useStudentStore = defineStore('students', () => {
     }
 
     function deleteStudent(studentToDelete) {
-        sortedStudents.value = sortedStudents.value.filter( (student) => {
-            return studentToDelete !== student
+       const deleteStudentAPI = mande(`/api/students/${studentToDelete.id}`)
+        deleteStudentAPI.delete().then( () => {
+            getAllStudents()
         })
     }
 
@@ -55,7 +56,7 @@ export const useStudentStore = defineStore('students', () => {
         getAllStudents,
 
         // computed properties
-
+        addNewStudentErrors,
         studentCount
     }
 
